@@ -9,11 +9,16 @@ out_file = input('Out file path: ')
 with open(log_file) as fd:
     lines = fd.readlines()
     ratios = []
+    blocks = []
     sizes = []
     for i in range(len(lines)):
         res = re.match('.*?compression ratio ([\d]+\.[\d]+).*?', lines[i])
         if res is not None:
             ratios.append(1 - 1/float(res.group(1)))
+
+            res = re.match('.*?for ([\w]+) .*?', lines[i])
+            if res is not None:
+                blocks.append(res.group(1))
 
             res = re.match('.*?Acceptable block.*? Tx:([\d]+).*?', lines[i+2])
             if res is not None:
